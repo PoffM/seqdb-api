@@ -6,5 +6,6 @@ Generate Maven reports
 * OWASP dependency-check
 * Jacoco
 
-.. code-block:: bash
+.. code-block:: console
+
   mvn clean verify site

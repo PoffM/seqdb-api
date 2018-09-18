@@ -1,4 +1,4 @@
-Database migration with Liquibase
+Database Migration with Liquibase
 =================================
 
 This application uses Liquibase to generate the database and migrate to new versions of the database. Changelogs are source xml files that describe schema changes to the database. Liquibase maintains a "DATABASECHANGELOG" table in the same database to keep track of which changelogs have been executed. When the application starts, any changelogs that have not been executed are executed.

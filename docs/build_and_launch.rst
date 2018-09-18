@@ -1,34 +1,35 @@
 Build and launch
 ================
 
-Required:
+Required
+--------
 
 * Java 1.8+
 * Maven 3.2+
 
-Launch:
--------
+Launch
+------
 
 .. code-block:: console
 
   mvn clean spring-boot:run
 
-Run unit tests:
----------------
+Run unit tests
+--------------
 
 .. code-block:: console
 
   mvn clean test
 
-Run All tests (Integration + Unit):
------------------------------------
+Run All tests (Integration + Unit)
+----------------------------------
 
 .. code-block:: console
 
   mvn clean verify
 
-Package:
---------
+Package
+-------
 
 .. code-block:: console
 
@@ -36,8 +37,8 @@ Package:
 
 This will create an executable jar.
 
-To run the packaged application (using an embedded Tomcat instance):
---------------------------------------------------------------------
+Run the packaged application
+----------------------------
 
 .. code-block:: console
 

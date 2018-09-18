@@ -1,6 +1,8 @@
 Examples
 ========
 
+Add new Region:
+
 .. code-block:: console
 
   curl -XPOST -H "Content-Type: application/vnd.api+json" \
