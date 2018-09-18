@@ -1,44 +1,50 @@
 Build and launch
 ================
 
-Required
---------
+Required:
 
 * Java 1.8+
 * Maven 3.2+
 
-To launch
----------
+Launch:
+-------
 
-.. code-block:: bash
+.. code-block:: console
+
   mvn clean spring-boot:run
 
-To run tests
-------------
+Run unit tests:
+---------------
 
-Unit tests:
-.. code-block:: bash
+.. code-block:: console
+
   mvn clean test
 
-All tests (Integration + Unit):
-.. code-block:: bash
+Run All tests (Integration + Unit):
+-----------------------------------
+
+.. code-block:: console
+
   mvn clean verify
 
-To package
-----------
+Package:
+--------
 
-.. code-block:: bash
+.. code-block:: console
+
   mvn clean install
 
 This will create an executable jar.
 
-To run the packaged application (using an embedded Tomcat instance)
--------------------------------------------------------------------
+To run the packaged application (using an embedded Tomcat instance):
+--------------------------------------------------------------------
 
-.. code-block:: bash
+.. code-block:: console
+
   java -jar seqdb.api.jar
 
 You can also include configuration from an external file:
 
-.. code-block:: bash
+.. code-block:: console
+
   java -jar seqdb.api.jar --spring.config.additional-location=./myconfig.yml
