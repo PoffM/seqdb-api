@@ -1,6 +1,8 @@
 spring:
   jpa:
     properties.hibernate:
+      # Intercepts Hibernate flushes to trim string fields when an entity is persisted or updated.
+      ejb.interceptor: ca.gc.aafc.seqdb.api.hibernate.TrimInterceptor
       # Ehcache enabled to improve Hibernate performance.
       cache:
         use_second_level_cache: true
