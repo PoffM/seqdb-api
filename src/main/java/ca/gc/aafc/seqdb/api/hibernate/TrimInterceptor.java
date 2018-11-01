@@ -13,27 +13,33 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Intercepts Hibernate events to trim strings.
+ * Intercepts Hibernate events to trim all string properties on modified entities.
+ * e.g. " Mat " becomes "Mat"
  */
 @SuppressWarnings("serial")
 @Configuration
 public class TrimInterceptor extends EmptyInterceptor {
 
   /**
-   * Called before Hibernate's flush operation. 
+   * Called before Hibernate's flush operation to trim all string properties on modified entities.
    */
   @SuppressWarnings("unchecked")
   @Override
   public void preFlush(Iterator entities) {
     entities.forEachRemaining(this::trimStringFields);
   }
-  
+
+  /**
+   * Trims all string properties on a JPA entity instance.
+   * e.g. " Mat " becomes "Mat".
+   * 
+   * @param entity
+   */
   private void trimStringFields(Object entity) {
     List<PropertyDescriptor> stringFields = Stream
         .of(BeanUtils.getPropertyDescriptors(entity.getClass()))
-        .filter(field -> field.getPropertyType().equals(String.class))
-        .collect(Collectors.toList());
-    
+        .filter(field -> field.getPropertyType().equals(String.class)).collect(Collectors.toList());
+
     for (PropertyDescriptor stringField : stringFields) {
       Method readMethod = stringField.getReadMethod();
       Method writeMethod = stringField.getWriteMethod();
@@ -47,5 +53,5 @@ public class TrimInterceptor extends EmptyInterceptor {
       }
     }
   }
-  
+
 }
