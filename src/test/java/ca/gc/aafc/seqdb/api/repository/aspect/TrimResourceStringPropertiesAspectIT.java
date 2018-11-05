@@ -1,4 +1,4 @@
-package ca.gc.aafc.seqdb.api.hibernate;
+package ca.gc.aafc.seqdb.api.repository.aspect;
 
 import java.io.Serializable;
 

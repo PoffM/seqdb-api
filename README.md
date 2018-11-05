@@ -70,6 +70,8 @@ This application is configured using Spring Boot, with default properties stored
 
 * Importing Sample Accounts: When running the application locally with an in-memory or MySQL database it may be useful to have 2 existing Accounts that you can log into. To import the Admin (username=Admin, password=Admin) and User (username=User, password=User) accounts, set the configuration property "import-sample-accounts" to true. **Warning:** This is a dangerous argument to run on production because it will import an admin account with an easy password. You should only pass this argument from the command line or from an external configuration file that is only used on a local dev instance, instead of src/resources/application.yml.
 
+* Automatically trimming string input: Setting "seqdb.trim-resource-string-properties" to true will remove whitespace from the beginning and end of all string properties on created or updated resources.
+
 ## Database migration with Liquibase
 
 This application uses Liquibase to generate the database and migrate to new versions of the database. Changelogs are source xml files that describe schema changes to the database. Liquibase maintains a "DATABASECHANGELOG" table in the same database to keep track of which changelogs have been executed. When the application starts, any changelogs that have not been executed are executed.
