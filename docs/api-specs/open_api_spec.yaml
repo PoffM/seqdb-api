@@ -1,0 +1,129 @@
+openapi: 3.0.1
+info:
+  title: SeqDB API
+  description: This is the SeqDB API documentation compliant to Open API 3 specification
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080/api'  
+security: 
+  - BasicAuth: []
+
+paths:
+  /product: 
+      put:
+        summary: Update an existing product
+        operationId: updateProduct
+        requestBody:
+          description: Product that needs to be added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+          required: true
+        responses:
+          '400':
+            description: Invalid ID supplied
+            content: {}
+          '404':
+            description: Product not found
+            content: {}
+          '405':
+            description: Validation exception
+            content: {} 
+      post:
+        summary: Add a new product
+        operationId: addProduct
+        requestBody:
+          description: Product that needs to be added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+          required: true
+        responses:
+          '405':
+            description: Invalid input
+            content: {}
+  '/product/{ProductId}':
+    get:
+      parameters:
+        - name: ProductId
+          required: true
+          in: path
+          schema:
+            type: integer
+              
+      operationId: getProductById 
+      responses:
+        '400':
+          description: Invalid ID
+          content: {}
+        '404':
+          description: Product not found
+          content: {}  
+    delete:
+      parameters:
+        - name: ProductId
+          required: true
+          in: path
+          schema:
+            type: integer
+      operationId: deleteProductById
+      responses:
+        '400':
+          description: Invalid ID
+          content: {}
+        '404':
+          description: Product not found
+          content: {}
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        ProductId:
+          type: integer
+          format: int64
+        Name:
+          type: string
+        Description:
+          type: string
+        Type:
+          type: string
+        UPC:
+          type: string
+        LastModified:
+          type: string
+          format: date-time
+        Group:
+          $ref: '#/components/schemas/Group'
+      xml:
+        name: Product  
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      xml:
+        name: Category
+  securitySchemes: 
+    BasicAuth: 
+      type: http
+      scheme: Basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    
+      
+
+    
