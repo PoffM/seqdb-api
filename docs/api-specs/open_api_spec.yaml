@@ -16,7 +16,7 @@ paths:
         requestBody:
           description: Product that needs to be added
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/Product'
             application/xml:
@@ -39,7 +39,7 @@ paths:
         requestBody:
           description: Product that needs to be added
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/Product'
             application/xml:
@@ -114,16 +114,9 @@ components:
         name:
           type: string
       xml:
-        name: Category
+        name: Group
   securitySchemes: 
     BasicAuth: 
       type: http
       scheme: Basic
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: X-API-Key
-    
-      
-
     
