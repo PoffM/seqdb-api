@@ -1,0 +1,251 @@
+FORMAT: 1A
+HOST: https://localhost:8080/
+
+# SeqDB API
+
+SeqDB is an API that manage laboratory workflows
+
+# Product [/api/product]
+
+The product
+
+### Create a new product [PUT /api/product]
+
++ Request (application/vnd.api+json)
+
+    + Headers
+
+            Accept: application/vnd.api+json
+
+    + Attributes (object)
+        + data (object, required)
+            + type (string, required)
+            + attributes (object, required) - may contain the properties below as well as any others that should be included
+                + ProductID (number)
+                + Name (string)
+            + id (string) - the server may accept a client-generated id along with the request
+
+    + Body
+
+            {
+                "data": {
+                    "type": "product",
+                    "id": "1234"
+                    "attributes": {
+                        "ProductID": "123",
+                        "Name": "secret"
+                    }
+                }
+            }
+
++ Response 201 (application/vnd.api+json)
+
+    + Headers
+
+            Location: https://localhost:8080/api/product
+
+    + Body
+
+            {
+                "links": {
+                    "self": "https://localhost:8080/api/product"
+                },
+                "data": {
+                    "id": "1234",
+                    "type": "product",
+                    "attributes": {
+                        "Name": "secret"
+                    },
+                    "relationships": {
+                        "group": {
+                            "links": {
+                                "related": "https://localhost:8080/api/group"
+                            },
+                            "data": {
+                                "id": "378",
+                                "type": "group"
+                            }
+                        }
+                    }
+                }
+            }
+
++ Response 403 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "403",
+                "title": "Forbidden",
+                "detail": "Authorization header not allowed"
+            }]
+        }
+
++ Response 409 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "409",
+                "title": "Conflict",
+                "detail": "A  product with that same ID already exists"
+            }]
+        }
+
++ Response 409 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "409",
+                "title": "Conflict",
+                "detail": "data.type must be 'product'"
+            }]
+        }
+
+### Fetch [GET /api/product]
+
++ Request
+
+    + Headers
+
+            Accept: application/vnd.api+json
+            Authorization: Bearer sessionid123
+
++ Response 200 (application/vnd.api+json)
+
+        {
+            "links": {
+                "self": "https://localhost:8080/api/product"
+            },
+            "data": {
+                "id": "4567",
+                "type": "product",
+                "attributes": {
+                    "Name": "john-doe"
+                },
+                "relationships": {
+                    "group": {
+                        "links": {
+                            "related": "https://localhost:8080/api/group"
+                        },
+                        "data": {
+                            "id": "378",
+                            "type": "group"
+                        }
+                    }
+                }
+            }
+        }
+
++ Response 401 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "401",
+                "title": "Unauthorized",
+                "detail": "Authorization header missing"
+            }]
+        }
+
++ Response 401 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "401",
+                "title": "Unauthorized",
+                "detail": "Session invalid"
+            }]
+        }
+
+### Update [PATCH]
+
++ Request (application/vnd.api+json)
+
+    + Headers
+
+            Accept: application/vnd.api+json
+            Authorization: Bearer sessionid123
+
+    + Body
+
+            {
+                "data": {
+                    "id": "def678",
+                    "type": "product",
+                    "attributes": {
+                        "Description": "newsecret"
+                        "ProductID": 1
+                    }
+                }
+            }
+
++ Response 204
+
++ Response 401 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "401",
+                "title": "Unauthorized",
+                "detail": "Authorization header missing"
+            }]
+        }
+
++ Response 401 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "401",
+                "title": "Unauthorized",
+                "detail": "Product invalid"
+            }]
+        }
+
++ Response 409 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "409",
+                "title": "Conflict",
+                "detail": "data.type must be 'product'"
+            }]
+        }
+
++ Response 409 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "409",
+                "title": "Conflict",
+                "detail": "data.id must be '{id}'"
+            }]
+        }
+
+### Delete a Product [DELETE]
+
++ Request
+
+    + Headers
+
+            Accept: application/vnd.api+json
+            Authorization: Bearer sessionid123
+
++ Response 204
+
++ Response 401 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "401",
+                "title": "Unauthorized",
+                "detail": "Authorization header missing"
+            }]
+        }
+
++ Response 401 (application/vnd.api+json)
+
+        {
+            errors: [{
+                "status": "401",
+                "title": "Unauthorized",
+                "detail": "Product invalid"
+            }]
+        }
