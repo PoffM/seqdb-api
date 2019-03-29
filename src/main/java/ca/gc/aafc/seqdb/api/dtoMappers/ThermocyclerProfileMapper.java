@@ -20,7 +20,7 @@ public abstract class ThermocyclerProfileMapper {
 
   //public abstract declaration designates the responsibility of generating the method to
   //MapStruct's own code generation and auto mapping.
-  public abstract ThermocyclerProfileDto  pcrProfileToThermocyclerProfileDto(PcrProfile pcrProfile);
+  public abstract ThermocyclerProfileDto  entityToDto(PcrProfile pcrProfile);
   
   //The after mapping annotation will run the following method after the initial mapping is done.
   //The method will only be injected for mappings with the Type designated with @MappingTarget
@@ -50,7 +50,7 @@ public abstract class ThermocyclerProfileMapper {
   }
   
   //This version will run out own implementation with no auto generated code injected.
-  public  PcrProfile thermocyclerProfileDtoToPcrProfile(ThermocyclerProfileDto thermoDto) {
+  public  PcrProfile dtoToEntity(ThermocyclerProfileDto thermoDto) {
       PcrProfile pcr = new PcrProfile();
       pcr.setId(thermoDto.getPcrProfileId());
       pcr.setStep1(thermoDto.getSteps().get(1));

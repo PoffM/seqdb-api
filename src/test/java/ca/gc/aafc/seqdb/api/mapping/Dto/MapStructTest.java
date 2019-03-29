@@ -9,16 +9,44 @@ import java.util.HashSet;
 import java.util.Map;
 
 import org.junit.Test;
+import org.mapstruct.factory.Mappers;
+
+import ca.gc.aafc.seqdb.api.dto.PcrPrimerDto;
 import ca.gc.aafc.seqdb.api.dto.RegionDto;
 import ca.gc.aafc.seqdb.api.dto.ThermocyclerProfileDto;
+import ca.gc.aafc.seqdb.api.dtoMappers.PcrPrimerMapper;
 import ca.gc.aafc.seqdb.api.dtoMappers.RegionMapper;
 import ca.gc.aafc.seqdb.api.dtoMappers.ThermocyclerProfileMapper;
+import ca.gc.aafc.seqdb.entities.PcrPrimer;
 import ca.gc.aafc.seqdb.entities.PcrProfile;
 import ca.gc.aafc.seqdb.entities.Region;
+import ca.gc.aafc.seqdb.factories.PcrPrimerFactory;
 import ca.gc.aafc.seqdb.factories.PcrProfileFactory;
 import ca.gc.aafc.seqdb.factories.RegionFactory;
 
 public class MapStructTest {
+  private final String thermoDto = ThermocyclerProfileDto.class.getSimpleName();
+  private final String regionDto = RegionDto.class.getSimpleName();
+  private final String pcrPrimerDto = PcrPrimerDto.class.getSimpleName();
+  
+  private Object getMapped(Class<?> dtoClassName, Object objectToMap) throws NoSuchMethodException {
+    String className = dtoClassName.getSimpleName();
+    
+    
+    if(className.equals(thermoDto)) {
+      return ThermocyclerProfileMapper.INSTANCE.entityToDto((PcrProfile) objectToMap);
+    }
+    else if(className.equals(regionDto)) {
+      return RegionMapper.INSTANCE.entityToDto((Region) objectToMap);
+    }
+    else if(className.equals(pcrPrimerDto)) {
+      return PcrPrimerMapper.INSTANCE.entityToDto((PcrPrimer) objectToMap);
+    }
+    else {
+      throw new NoSuchMethodException("No mapper found that matches "+ className);
+    }
+    
+  }
   
   private Map<Integer, String> createExpectedMap(){
     Map<Integer, String> expectedMap = new HashMap<Integer, String>();
@@ -127,9 +155,8 @@ public class MapStructTest {
       IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     Region region = RegionFactory.newRegion().description("About").build();
     
-    
 
-    RegionDto regionDto = RegionMapper.INSTANCE.regionToRegionDto(region);
+    RegionDto regionDto = RegionMapper.INSTANCE.entityToDto(region);
     System.out.println("MADE A MAPPER");
     
     assertEquals(regionDto.getDescription(), region.getDescription());
@@ -165,7 +192,7 @@ public class MapStructTest {
     
     
     //create DTO based off mapping implementation
-    ThermocyclerProfileDto thermoDto = ThermocyclerProfileMapper.INSTANCE.pcrProfileToThermocyclerProfileDto(basePcr);
+    ThermocyclerProfileDto thermoDto = ThermocyclerProfileMapper.INSTANCE.entityToDto(basePcr);
     
     //verify results
    verifyObjectsAreEqual(thermoDto, basePcr);
@@ -183,7 +210,7 @@ public class MapStructTest {
     baseDto.setSteps(expectedMap);
     
     //create Entity based off mapping implementation
-    PcrProfile pcrFromMapper = ThermocyclerProfileMapper.INSTANCE.thermocyclerProfileDtoToPcrProfile(baseDto);
+    PcrProfile pcrFromMapper = ThermocyclerProfileMapper.INSTANCE.dtoToEntity(baseDto);
     
     //verify the results
     verifyObjectsAreEqual(baseDto, pcrFromMapper);
@@ -191,4 +218,41 @@ public class MapStructTest {
     validateCreatedPcrProfileSteps(pcrFromMapper);
     
   }
+  
+  @Test
+  public void TestMapperFinder() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    PcrProfile basePcr = PcrProfileFactory.newPcrProfile()
+        .step1("Losing")
+        .step2("one glove")
+        .step3("is certainly")
+        .step4("painful")
+        .step5("but nothing")
+        .step6("compared to")
+        .step7("the pain,")
+        .step8("of losing")
+        .step9("one")
+        .step10("throwing")
+        .step11("away")
+        .step12("the other")
+        .step13("and finding")
+        .step14("the first")
+        .step15("one again.").build();
+    
+    ThermocyclerProfileDto thermoDto = (ThermocyclerProfileDto) getMapped(ThermocyclerProfileDto.class, basePcr);
+    
+    
+    Region baseRegion = RegionFactory.newRegion().description("About").build();
+    
+    RegionDto regionDto = (RegionDto) getMapped(RegionDto.class, baseRegion);
+    
+    PcrPrimer basePrimer = PcrPrimerFactory.newPcrPrimer().build();
+    
+    PcrPrimerDto primerDto = (PcrPrimerDto) getMapped(PcrPrimerDto.class, basePrimer);
+    
+    verifyObjectsAreEqual(primerDto, basePrimer);
+    verifyObjectsAreEqual(regionDto, baseRegion);
+    verifyObjectsAreEqual(thermoDto, basePcr);
+
+  }
+  
 }

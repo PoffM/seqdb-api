@@ -14,11 +14,11 @@ public interface RegionMapper {
   RegionMapper INSTANCE = Mappers.getMapper( RegionMapper.class);
   
   
-  RegionDto regionToRegionDto(Region region);
+  RegionDto entityToDto(Region region);
   
   //applies the configurations in reverse so that mappings are bilateral.
   @InheritInverseConfiguration
-  Region fromRegionDto(RegionDto regionDto);
+  Region dtoToEntity(RegionDto regionDto);
   
   
   
