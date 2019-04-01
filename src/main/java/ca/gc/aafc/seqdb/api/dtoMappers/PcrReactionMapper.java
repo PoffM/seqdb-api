@@ -15,6 +15,6 @@ public interface PcrReactionMapper {
   PcrReactionDto entityToDto(PcrReaction reaction);
   
   @InheritInverseConfiguration
-  PcrReaction dtoToEntity(PcrReaction reactionDto);
+  PcrReaction dtoToEntity(PcrReactionDto reactionDto);
 
 }
