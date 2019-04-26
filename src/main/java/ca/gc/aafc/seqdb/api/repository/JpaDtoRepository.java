@@ -120,7 +120,15 @@ public class JpaDtoRepository {
     if (customFilter != null) {
       criteriaQuery.where(customFilter.apply(targetPath, criteriaQuery, cb));
     }
-
+    //TODO Currently the results are returned as a list of tuples which contain the object's attributes.
+    // The mapFromTuple method transforms the list of tuple into a hashmap which modelmapper can work with.
+    //However MapStruct works with Objects so we will need to implement some form of constructor that will take
+    // a List<Tuple> into a List<Object>. The new stream would look something like 
+    
+    // result.stream(JPADtoRepositroy::ObjectFromTuple)
+    // .map(map -> MapperFinder( targetDtoClass.GetSimpleName(), map)
+    // .collect(Collectors.toList()) ... the rest is the same.
+    
     List<Tuple> result = entityManager
         .createQuery(criteriaQuery)
         .setFirstResult(

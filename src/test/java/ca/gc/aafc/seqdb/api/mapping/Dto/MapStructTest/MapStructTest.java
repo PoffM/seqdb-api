@@ -102,7 +102,7 @@ public class MapStructTest {
   }
 
   @Test
-  public void ThermocyclerProfileMapper_pcrProfileToThermocyclerProfileDto() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+  public void ThermocyclerProfileMapper_pcrProfileToThermocyclerProfileDto_ReturnsMappedEntityWithAllAttributes() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     //set up base entity
     PcrProfile basePcr = PcrProfileFactory.newPcrProfile()
         .step1("Losing")
@@ -131,7 +131,7 @@ public class MapStructTest {
   }
 
   @Test
-  public void TestMapperFinder() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+  public void MapperFinder_DifferentConstructedEntities_MappedDtosWithNoMissingAttributes() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     PcrProfile basePcr = PcrProfileFactory.newPcrProfile()
         .step1("Losing")
         .step2("one glove")
@@ -165,5 +165,6 @@ public class MapStructTest {
     verifyObjectsAreEqual(thermoDto, basePcr);
 
   }
+  
 
 }
