@@ -4,10 +4,22 @@ cache:
   directories:
   - $HOME/.m2
 
-script: mvn verify
+script: mvn install
 
 jdk:
-  - oraclejdk8
   - openjdk8
   - openjdk9
+  - openjdk10
 
+deploy:
+  - provider: script
+    script: bash docker-push-prod.sh
+    skip_cleanup: true
+    on:
+      branch: master
+      tags: true
+  - provider: script
+    script: bash docker-push-dev.sh
+    skip_cleanup: true
+    on:
+      branch: dev
