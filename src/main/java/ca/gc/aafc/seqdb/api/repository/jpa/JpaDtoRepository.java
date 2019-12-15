@@ -26,14 +26,17 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.Streams;
 
 import ca.gc.aafc.seqdb.api.repository.handlers.JpaDtoMapper;
 import ca.gc.aafc.seqdb.api.repository.handlers.SelectionHandler;
+import ca.gc.aafc.seqdb.api.repository.links.NoLinkInformation;
 import ca.gc.aafc.seqdb.api.repository.meta.JpaMetaInformationProvider;
 import ca.gc.aafc.seqdb.api.repository.meta.JpaMetaInformationProvider.JpaMetaInformationParams;
 import ca.gc.aafc.seqdb.interfaces.UniqueObj;
@@ -66,8 +69,13 @@ public class JpaDtoRepository {
   @NonNull
   @Getter
   private final JpaDtoMapper dtoJpaMapper;
+  
+  /* Forces CRNK to not display any top-level links. */
+  private static final NoLinkInformation NO_LINK_INFORMATION = new NoLinkInformation();
 
-  private static final ModelMapper MAPPER = new ModelMapper();
+  private static final ObjectMapper MAPPER = new ObjectMapper()
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+      .registerModule(new JavaTimeModule()); // Provides support for LocalDate and other Java 8 date/time types. 
 
   /**
    * Query the DTO repository backed by a JPA datasource for a list of DTOs.
@@ -132,11 +140,11 @@ public class JpaDtoRepository {
         .getResultList();
 
     return new DefaultResourceList<>(result.stream().map(JpaDtoRepository::mapFromTuple)
-        .map(map -> JpaDtoRepository.MAPPER.map(map, targetDtoClass)).collect(Collectors.toList()),
+        .map(map -> JpaDtoRepository.MAPPER.convertValue(map, targetDtoClass)).collect(Collectors.toList()),
         metaInformationProvider.getMetaInformation(
             JpaMetaInformationParams.builder().sourceResourceClass(sourceDtoClass)
                 .customRoot(customRoot).customFilter(customFilter).build()),
-        null);
+        NO_LINK_INFORMATION);
   }
 
   /**
