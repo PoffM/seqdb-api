@@ -69,8 +69,8 @@ public class KeycloakAccountRegistrationFilter extends GenericFilterBean {
         AccessToken accessToken = principal.getKeycloakSecurityContext().getToken();
 
         People newPerson = new People();
-        newPerson.setNameGiven(accessToken.getGivenName());
-        newPerson.setNameFamily(accessToken.getFamilyName());
+        newPerson.setNameGiven(Optional.ofNullable(accessToken.getGivenName()).orElse(""));
+        newPerson.setNameFamily(Optional.ofNullable(accessToken.getFamilyName()).orElse(""));
         newPerson.setNote(
             "Auto-generated Keycloak user for " + accountName + " on " + new Date().toString()
         );

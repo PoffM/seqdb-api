@@ -2,8 +2,6 @@ package ca.gc.aafc.seqdb.api.security.keycloak;
 
 import javax.inject.Inject;
 
-import org.keycloak.adapters.KeycloakConfigResolver;
-import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.keycloak.adapters.springsecurity.filter.KeycloakAuthenticationProcessingFilter;
@@ -35,11 +33,6 @@ public class KeycloakAuthConfig extends KeycloakWebSecurityConfigurerAdapter {
     KeycloakAuthenticationProvider keycloakAuthProvider = keycloakAuthenticationProvider();
     keycloakAuthProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
     auth.authenticationProvider(keycloakAuthProvider);
-  }
-
-  @Bean
-  public KeycloakConfigResolver keycloakConfigResolver() {
-    return new KeycloakSpringBootConfigResolver();
   }
 
   @Bean
